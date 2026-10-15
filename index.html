@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Cuerpo Humano - Spanish Body Parts Practice Test</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .card-flip {
+            perspective: 1000px;
+        }
+        .card-flip-inner {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .card-flip.flipped .card-flip-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        .pulse-subtle {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Navigation Bar -->
+    <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                    <i class="fa-solid fa-child-reaching text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-200">
+                        El Cuerpo Humano
+                    </h1>
+                    <p class="text-xs text-slate-400 font-medium">Interactive Audio Practice Test & Studio</p>
+                </div>
+            </div>
+
+            <!-- Stats Header -->
+            <div class="flex items-center space-x-4 text-xs font-semibold">
+                <div class="bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60 flex items-center space-x-2">
+                    <i class="fa-solid fa-award text-amber-400 text-sm"></i>
+                    <span>Score: <span id="headerScore" class="text-amber-400 font-bold">0</span></span>
+                </div>
+                <div class="bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60 flex items-center space-x-2">
+                    <i class="fa-solid fa-fire text-orange-500 text-sm"></i>
+                    <span>Streak: <span id="headerStreak" class="text-orange-400 font-bold">0</span></span>
+                </div>
+                <div class="bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60 flex items-center space-x-2">
+                    <i class="fa-solid fa-check-double text-emerald-400 text-sm"></i>
+                    <span>Learned: <span id="headerLearned" class="text-emerald-400 font-bold">0</span>/59</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/80">
+            <nav class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 no-scrollbar text-sm font-medium" id="mainTabs">
+                <button onclick="switchTab('vocab')" id="tab-vocab" class="nav-tab active text-blue-400 bg-slate-800 px-3.5 py-2 rounded-lg flex items-center space-x-2 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Vocabulary List (59)</span>
+                </button>
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="nav-tab text-slate-400 hover:text-white px-3.5 py-2 rounded-lg flex items-center space-x-2 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Audio Flashcards</span>
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="nav-tab text-slate-400 hover:text-white px-3.5 py-2 rounded-lg flex items-center space-x-2 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Practice Test</span>
+                </button>
+                <button onclick="switchTab('meduele')" id="tab-meduele" class="nav-tab text-slate-400 hover:text-white px-3.5 py-2 rounded-lg flex items-center space-x-2 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-stethoscope"></i>
+                    <span>"Me Duele" Doctor Lab</span>
+                </button>
+                <button onclick="switchTab('anatomy')" id="tab-anatomy" class="nav-tab text-slate-400 hover:text-white px-3.5 py-2 rounded-lg flex items-center space-x-2 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-street-view"></i>
+                    <span>Body Explorer</span>
+                </button>
+                <button onclick="switchTab('speech')" id="tab-speech" class="nav-tab text-slate-400 hover:text-white px-3.5 py-2 rounded-lg flex items-center space-x-2 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-microphone"></i>
+                    <span>Speech Lab</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+
+        <!-- TAB 1: VOCABULARY DICTIONARY -->
+        <section id="view-vocab" class="tab-view space-y-6">
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <span>El Cuerpo Humano Master List</span>
+                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700">59 Terms</span>
+                    </h2>
+                    <p class="text-sm text-slate-500 mt-0.5">Click any speaker icon to hear authentic native pronunciation. Search and filter by category.</p>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <!-- Search input -->
+                    <div class="relative flex-1 md:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="vocabSearch" oninput="filterVocab()" placeholder="Search Spanish or English..." 
+                            class="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+                    </div>
+                    
+                    <!-- Filter category -->
+                    <select id="vocabFilter" onchange="filterVocab()" class="py-2 pl-3 pr-8 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">All Categories</option>
+                        <option value="head">Head & Face</option>
+                        <option value="upper_body">Arms & Hands</option>
+                        <option value="torso">Torso & Back</option>
+                        <option value="lower_body">Legs & Feet</option>
+                        <option value="internal">Internal Organs & Bones</option>
+                        <option value="general">General Body</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Vocabulary Cards Grid -->
+            <div id="vocabGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- TAB 2: FLASHCARDS -->
+        <section id="view-flashcards" class="tab-view hidden space-y-6">
+            <div class="max-w-xl mx-auto space-y-6">
+                <!-- Control Bar -->
+                <div class="flex items-center justify-between text-sm">
+                    <span class="font-semibold text-slate-600">Card <span id="cardIndex">1</span> of <span id="cardTotal">59</span></span>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="shuffleFlashcards()" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-all flex items-center space-x-1">
+                            <i class="fa-solid fa-shuffle"></i>
+                            <span>Shuffle</span>
+                        </button>
+                        <button onclick="resetFlashcards()" class="px-3 py-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-all flex items-center space-x-1">
+                            <i class="fa-solid fa-rotate"></i>
+                            <span>Reset</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Flip Card -->
+                <div id="flashcardElement" class="card-flip w-full h-80 cursor-pointer select-none" onclick="toggleCardFlip()">
+                    <div class="card-flip-inner relative w-full h-full rounded-3xl shadow-xl bg-white border border-slate-200">
+                        <!-- Front (Spanish) -->
+                        <div class="card-front absolute inset-0 rounded-3xl p-8 flex flex-col justify-between items-center text-center bg-gradient-to-br from-slate-900 to-indigo-950 text-white">
+                            <div class="w-full flex justify-between items-center text-xs font-medium text-slate-400">
+                                <span id="cardCategoryBadge" class="bg-indigo-900/60 border border-indigo-700/50 px-3 py-1 rounded-full text-indigo-300">Category</span>
+                                <span class="text-slate-400"><i class="fa-solid fa-repeat mr-1"></i> Click to flip</span>
+                            </div>
+
+                            <div class="space-y-3 my-auto">
+                                <p id="cardArticle" class="text-2xl font-bold text-blue-400">la</p>
+                                <h3 id="cardSpanish" class="text-4xl font-extrabold tracking-tight text-white">cabeza</h3>
+                                <p id="cardPhonetic" class="text-xs text-slate-400 italic">kah-BEH-sah</p>
+                            </div>
+
+                            <div class="w-full flex justify-center items-center">
+                                <button onclick="event.stopPropagation(); playCurrentCardAudio();" class="w-12 h-12 rounded-full bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/30 transition-transform active:scale-95">
+                                    <i class="fa-solid fa-volume-high text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Back (English & Details) -->
+                        <div class="card-back absolute inset-0 rounded-3xl p-8 flex flex-col justify-between items-center text-center bg-white text-slate-900 border-2 border-indigo-100">
+                            <div class="w-full flex justify-between items-center text-xs font-semibold text-slate-400">
+                                <span>ENGLISH TRANSLATION</span>
+                                <span class="text-slate-400"><i class="fa-solid fa-repeat mr-1"></i> Click to flip</span>
+                            </div>
+
+                            <div class="space-y-3 my-auto">
+                                <h4 id="cardEnglish" class="text-3xl font-extrabold text-slate-900">head</h4>
+                                <div id="cardGrammarNote" class="p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-900 font-medium">
+                                    Feminine noun
+                                </div>
+                            </div>
+
+                            <div class="w-full text-xs text-slate-400">
+                                Practice saying: <span id="cardSampleSentence" class="text-slate-700 font-semibold">"Me duele la cabeza"</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="nextCard(false)" class="py-3 px-4 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 font-bold rounded-2xl flex items-center justify-center space-x-2 transition-all">
+                        <i class="fa-solid fa-xmark"></i>
+                        <span>Need Review</span>
+                    </button>
+                    <button onclick="nextCard(true)" class="py-3 px-4 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 font-bold rounded-2xl flex items-center justify-center space-x-2 transition-all">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Mastered</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: PRACTICE QUIZ -->
+        <section id="view-quiz" class="tab-view hidden space-y-6">
+            <div class="max-w-2xl mx-auto space-y-6">
+                <!-- Quiz Config Header -->
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900">Practice Quiz Module</h3>
+                            <p class="text-xs text-slate-500">Test translation, audio comprehension, and articles</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <select id="quizType" onchange="startNewQuiz()" class="py-1.5 px-3 text-xs font-semibold bg-slate-100 border border-slate-300 rounded-xl">
+                            <option value="es_en">Spanish ➔ English</option>
+                            <option value="en_es">English ➔ Spanish</option>
+                            <option value="audio">Audio Listening Quiz</option>
+                            <option value="article">Article Picker (El/La/Las)</option>
+                        </select>
+                        <button onclick="startNewQuiz()" class="px-3 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-sm">
+                            New Quiz
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quiz Card Container -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-slate-200/80 space-y-6 relative overflow-hidden">
+                    <div class="flex justify-between items-center text-xs font-bold text-slate-400 uppercase tracking-wider">
+                        <span>Question <span id="quizQuestionNum">1</span>/10</span>
+                        <span id="quizScoreBadge" class="text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Score: 0/0</span>
+                    </div>
+
+                    <!-- Question Prompt Area -->
+                    <div class="text-center py-6 space-y-4">
+                        <div id="quizPromptSubtitle" class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Translate this term</div>
+                        
+                        <div class="flex items-center justify-center space-x-3">
+                            <h2 id="quizQuestionText" class="text-3xl md:text-4xl font-extrabold text-slate-900">la cabeza</h2>
+                            <button id="quizAudioBtn" onclick="playQuizQuestionAudio()" class="w-10 h-10 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 flex items-center justify-center transition-all">
+                                <i class="fa-solid fa-volume-high text-base"></i>
+                            </button>
+                        </div>
+
+                        <p id="quizHintText" class="text-xs text-slate-400 italic">Listen closely to the Spanish audio!</p>
+                    </div>
+
+                    <!-- Multiple Choice Options -->
+                    <div id="quizOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Options generated dynamically -->
+                    </div>
+
+                    <!-- Feedback Alert -->
+                    <div id="quizFeedback" class="hidden p-4 rounded-2xl text-center text-sm font-semibold transition-all">
+                        <!-- Feedback content -->
+                    </div>
+
+                    <!-- Next Question Button -->
+                    <div class="flex justify-end pt-2">
+                        <button id="quizNextBtn" onclick="nextQuizQuestion()" disabled class="px-6 py-3 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm rounded-xl transition-all flex items-center space-x-2">
+                            <span>Next Question</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: ME DUELE / ME DUELEN LAB -->
+        <section id="view-meduele" class="tab-view hidden space-y-6">
+            <div class="max-w-3xl mx-auto space-y-6">
+                <!-- Grammar Explanation Banner -->
+                <div class="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 rounded-3xl p-6 md:p-8 text-white shadow-xl space-y-4 border border-emerald-700/40">
+                    <div class="flex items-center space-x-3 text-emerald-400 font-bold text-sm tracking-wider uppercase">
+                        <i class="fa-solid fa-hand-holding-medical text-lg"></i>
+                        <span>Essential Spanish Grammar Rule</span>
+                    </div>
+
+                    <h2 class="text-2xl md:text-3xl font-extrabold">Expressing Pain: "Me duele" vs "Me duelen"</h2>
+                    <p class="text-sm text-slate-200 leading-relaxed">
+                        In Spanish, you don't say <em class="text-emerald-300">"My head hurts"</em> directly. Instead, you say <em class="text-emerald-300">"To me, the head is painful"</em>.
+                        Because the body part is the subject of the sentence, the verb matches whether the body part is singular or plural!
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="bg-emerald-950/80 border border-emerald-600/40 rounded-2xl p-4 space-y-1">
+                            <div class="text-xs font-bold text-emerald-400 uppercase">1. Singular Nouns</div>
+                            <div class="text-lg font-bold text-white">Me duele + singular noun</div>
+                            <p class="text-xs text-slate-300">Examples: <em>Me duele la cabeza</em> (My head hurts), <em>Me duele el brazo</em> (My arm hurts).</p>
+                        </div>
+                        <div class="bg-emerald-950/80 border border-emerald-600/40 rounded-2xl p-4 space-y-1">
+                            <div class="text-xs font-bold text-teal-400 uppercase">2. Plural Nouns</div>
+                            <div class="text-lg font-bold text-white">Me duelen + plural noun</div>
+                            <p class="text-xs text-slate-300">Examples: <em>Me duelen las amígdalas</em> (My tonsils hurt), <em>Me duelen las pecas</em> (My freckles hurt).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Doctor Simulator Drill -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md border border-slate-200 space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                        <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-stethoscope text-emerald-600"></i>
+                            <span>Doctor's Office Practice Drill</span>
+                        </h3>
+                        <span id="medueleScore" class="text-xs font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">Score: 0</span>
+                    </div>
+
+                    <div class="text-center py-4 space-y-3">
+                        <span id="medueleTargetEnglish" class="text-xs font-bold tracking-wider text-slate-400 uppercase">How do you say?</span>
+                        <h2 id="meduelePrompt" class="text-2xl md:text-3xl font-extrabold text-slate-800">"My tonsils hurt"</h2>
+                        <div id="medueleBodyPartHint" class="text-sm font-semibold text-blue-600">(Body Part: las amígdalas)</div>
+                    </div>
+
+                    <!-- Choice Buttons -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button onclick="checkMeDueleChoice('Me duele')" class="p-4 bg-slate-50 hover:bg-emerald-50 border-2 border-slate-200 hover:border-emerald-500 rounded-2xl font-bold text-slate-800 hover:text-emerald-900 transition-all text-left flex items-center justify-between group">
+                            <div>
+                                <div class="text-base">Me duele...</div>
+                                <div class="text-xs text-slate-500 group-hover:text-emerald-700 font-normal">Use for singular body parts</div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-emerald-600"></i>
+                        </button>
+
+                        <button onclick="checkMeDueleChoice('Me duelen')" class="p-4 bg-slate-50 hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl font-bold text-slate-800 hover:text-teal-900 transition-all text-left flex items-center justify-between group">
+                            <div>
+                                <div class="text-base">Me duelen...</div>
+                                <div class="text-xs text-slate-500 group-hover:text-teal-700 font-normal">Use for plural body parts</div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-slate-400 group-hover:text-teal-600"></i>
+                        </button>
+                    </div>
+
+                    <!-- Feedback Box -->
+                    <div id="medueleFeedback" class="hidden p-4 rounded-2xl text-center text-sm font-semibold space-y-2">
+                        <!-- Dynamic feedback -->
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button id="medueleNextBtn" onclick="nextMeDueleQuestion()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl transition-all flex items-center space-x-2">
+                            <span>Next Drill</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: BODY EXPLORER DIAGRAM -->
+        <section id="view-anatomy" class="tab-view hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200/80 space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Interactive Body Map Explorer</h2>
+                    <p class="text-sm text-slate-500">Click on any body region pin to highlight Spanish vocabulary and play audio.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <!-- SVG Interactive Human Silhouette Map -->
+                    <div class="lg:col-span-5 bg-slate-900 rounded-3xl p-6 flex justify-center items-center relative min-h-[420px] shadow-inner">
+                        <svg viewBox="0 0 300 500" class="w-full max-w-[280px] h-auto text-slate-700">
+                            <!-- Body Silhouette -->
+                            <!-- Head & Neck -->
+                            <circle cx="150" cy="50" r="32" fill="currentColor" class="hover:text-slate-600 transition-colors" />
+                            <rect x="142" y="80" width="16" height="25" rx="4" fill="currentColor" />
+                            
+                            <!-- Torso -->
+                            <path d="M110,105 L190,105 L180,260 L120,260 Z" fill="currentColor" />
+                            
+                            <!-- Arms -->
+                            <path d="M105,108 L75,200 L88,205 L112,120 Z" fill="currentColor" />
+                            <path d="M195,108 L225,200 L212,205 L188,120 Z" fill="currentColor" />
+                            <!-- Hands -->
+                            <circle cx="70" cy="215" r="10" fill="currentColor" />
+                            <circle cx="230" cy="215" r="10" fill="currentColor" />
+
+                            <!-- Legs -->
+                            <path d="M122,260 L115,410 L135,410 L145,260 Z" fill="currentColor" />
+                            <path d="M178,260 L185,410 L165,410 L155,260 Z" fill="currentColor" />
+                            <!-- Feet -->
+                            <ellipse cx="120" cy="420" rx="15" ry="8" fill="currentColor" />
+                            <ellipse cx="180" cy="420" rx="15" ry="8" fill="currentColor" />
+
+                            <!-- Interactive Clickable Pins -->
+                            <!-- Head Pin -->
+                            <g onclick="selectAnatomyPin('head')" class="cursor-pointer group">
+                                <circle cx="150" cy="40" r="10" class="fill-blue-500 group-hover:fill-blue-400 transition-all stroke-2 stroke-white" />
+                                <circle cx="150" cy="40" r="16" class="fill-blue-500/30 animate-ping" />
+                            </g>
+                            <!-- Face/Nose Pin -->
+                            <g onclick="selectAnatomyPin('face')" class="cursor-pointer group">
+                                <circle cx="150" cy="58" r="8" class="fill-emerald-500 group-hover:fill-emerald-400 transition-all stroke-2 stroke-white" />
+                            </g>
+                            <!-- Chest/Torso Pin -->
+                            <g onclick="selectAnatomyPin('torso')" class="cursor-pointer group">
+                                <circle cx="150" cy="140" r="10" class="fill-amber-500 group-hover:fill-amber-400 transition-all stroke-2 stroke-white" />
+                            </g>
+                            <!-- Arm Pin -->
+                            <g onclick="selectAnatomyPin('upper_body')" class="cursor-pointer group">
+                                <circle cx="90" cy="150" r="9" class="fill-purple-500 group-hover:fill-purple-400 transition-all stroke-2 stroke-white" />
+                            </g>
+                            <!-- Internal Organs Pin -->
+                            <g onclick="selectAnatomyPin('internal')" class="cursor-pointer group">
+                                <circle cx="150" cy="190" r="9" class="fill-rose-500 group-hover:fill-rose-400 transition-all stroke-2 stroke-white" />
+                            </g>
+                            <!-- Legs Pin -->
+                            <g onclick="selectAnatomyPin('lower_body')" class="cursor-pointer group">
+                                <circle cx="130" cy="330" r="10" class="fill-cyan-500 group-hover:fill-cyan-400 transition-all stroke-2 stroke-white" />
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Region Vocabulary Detail List -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <div>
+                                <span class="text-xs font-bold uppercase text-slate-400">Active Region</span>
+                                <h3 id="anatomyRegionTitle" class="text-xl font-bold text-slate-900">Head & Face</h3>
+                            </div>
+                            <span id="anatomyTermCount" class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full">21 Terms</span>
+                        </div>
+
+                        <div id="anatomyTermsContainer" class="max-h-[350px] overflow-y-auto space-y-2 pr-2">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: SPEECH RECOGNITION LAB -->
+        <section id="view-speech" class="tab-view hidden space-y-6">
+            <div class="max-w-xl mx-auto space-y-6">
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-md border border-slate-200/80 text-center space-y-6">
+                    <div class="w-16 h-16 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-blue-500/20">
+                        <i class="fa-solid fa-microphone"></i>
+                    </div>
+
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Pronunciation Studio</h2>
+                        <p class="text-sm text-slate-500 mt-1">Speak Spanish into your microphone to verify your pronunciation precision!</p>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 space-y-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Target Spanish Phrase</span>
+                        <h3 id="speechTargetSpanish" class="text-3xl font-extrabold text-blue-600">la cabeza</h3>
+                        <p id="speechTargetEnglish" class="text-sm text-slate-600 font-semibold">head</p>
+                        
+                        <button onclick="playSpeechTargetAudio()" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs font-bold rounded-xl transition-all inline-flex items-center space-x-1.5">
+                            <i class="fa-solid fa-volume-high"></i>
+                            <span>Listen to Standard Pronunciation</span>
+                        </button>
+                    </div>
+
+                    <!-- Mic Record Button -->
+                    <div class="py-2">
+                        <button id="speechMicBtn" onclick="toggleSpeechRecording()" class="w-20 h-20 rounded-full bg-rose-600 hover:bg-rose-500 text-white flex items-center justify-center mx-auto shadow-xl shadow-rose-500/30 transition-transform active:scale-95">
+                            <i id="speechMicIcon" class="fa-solid fa-microphone text-2xl"></i>
+                        </button>
+                        <p id="speechMicStatus" class="text-xs font-semibold text-slate-400 mt-3">Click microphone and speak clearly in Spanish</p>
+                    </div>
+
+                    <!-- Speech Output Result -->
+                    <div id="speechResultCard" class="hidden p-4 rounded-2xl text-sm font-semibold transition-all">
+                        <div id="speechDetectedText" class="text-base font-bold">You said: "--"</div>
+                        <div id="speechScoreMessage" class="text-xs mt-1">Accuracy Match</div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2">
+                        <button onclick="getRandomSpeechTerm()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all">
+                            <i class="fa-solid fa-shuffle mr-1"></i> New Word
+                        </button>
+                        <button onclick="nextSpeechTerm()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all">
+                            Next Word <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        /* FULL 59 VOCABULARY ITEMS + GENDER/ARTICLE BREAKDOWN */
+        const VOCABULARY = [
+            { id: 1, spanish: "las amígdalas", english: "tonsils", gender: "f-plural", article: "las", noun: "amígdalas", phonetic: "lahs ah-MEEG-dah-lahs", category: "internal", note: "Plural noun -> uses 'Me duelen'" },
+            { id: 2, spanish: "la barba", english: "beard", gender: "f", article: "la", noun: "barba", phonetic: "lah BAR-bah", category: "head", note: "Feminine noun" },
+            { id: 3, spanish: "la barbilla", english: "chin", gender: "f", article: "la", noun: "barbilla", phonetic: "lah bar-BEE-yah", category: "head", note: "Feminine noun" },
+            { id: 4, spanish: "la barriga", english: "tummy", gender: "f", article: "la", noun: "barriga", phonetic: "lah bah-REE-gah", category: "torso", note: "Informal for belly/stomach" },
+            { id: 5, spanish: "el bigote", english: "moustache", phonetic: "ehl bee-GOH-teh", gender: "m", article: "el", noun: "bigote", category: "head", note: "Masculine noun" },
+            { id: 6, spanish: "la boca", english: "mouth", phonetic: "lah BOH-kah", gender: "f", article: "la", noun: "boca", category: "head", note: "Feminine noun" },
+            { id: 7, spanish: "el brazo", english: "arm", phonetic: "ehl BRAH-soh", gender: "m", article: "el", noun: "brazo", category: "upper_body", note: "Masculine noun" },
+            { id: 8, spanish: "la cabeza", english: "head", phonetic: "lah kah-BEH-sah", gender: "f", article: "la", noun: "cabeza", category: "head", note: "Feminine noun" },
+            { id: 9, spanish: "la cadera", english: "hip", phonetic: "lah kah-DEH-rah", gender: "f", article: "la", noun: "cadera", category: "torso", note: "Feminine noun" },
+            { id: 10, spanish: "la cara", english: "face", phonetic: "lah KAH-rah", gender: "f", article: "la", noun: "cara", category: "head", note: "Feminine noun" },
+            { id: 11, spanish: "la ceja", english: "eyebrow", phonetic: "lah SEH-hah", gender: "f", article: "la", noun: "ceja", category: "head", note: "Feminine noun" },
+            { id: 12, spanish: "el cerebro", english: "brain", phonetic: "ehl seh-REH-broh", gender: "m", article: "el", noun: "cerebro", category: "internal", note: "Masculine organ" },
+            { id: 13, spanish: "la cintura", english: "waist", phonetic: "lah seen-TOO-rah", gender: "f", article: "la", noun: "cintura", category: "torso", note: "Feminine noun" },
+            { id: 14, spanish: "el codo", english: "elbow", phonetic: "ehl KOH-doh", gender: "m", article: "el", noun: "codo", category: "upper_body", note: "Masculine noun" },
+            { id: 15, spanish: "el corazón", english: "heart", phonetic: "ehl koh-rah-SOHN", gender: "m", article: "el", noun: "corazón", category: "internal", note: "Masculine organ with accent on 'ó'" },
+            { id: 16, spanish: "la costilla", english: "rib", phonetic: "lah kohs-TEE-yah", gender: "f", article: "la", noun: "costilla", category: "internal", note: "Feminine bone" },
+            { id: 17, spanish: "el cráneo", english: "skull", phonetic: "ehl KRAH-neh-oh", gender: "m", article: "el", noun: "cráneo", category: "internal", note: "Masculine bone" },
+            { id: 18, spanish: "el cuello", english: "neck", phonetic: "ehl KWEH-yoh", gender: "m", article: "el", noun: "cuello", category: "head", note: "Double 'll' sounds like English 'y'" },
+            { id: 19, spanish: "el cuerpo", english: "body", phonetic: "ehl KWER-poh", gender: "m", article: "el", noun: "cuerpo", category: "general", note: "General body term" },
+            { id: 20, spanish: "el dedo", english: "finger", phonetic: "ehl DEH-doh", gender: "m", article: "el", noun: "dedo", category: "upper_body", note: "Can also mean toe ('dedo del pie')" },
+            { id: 21, spanish: "el diente", english: "tooth", phonetic: "ehl deeh-EHN-teh", gender: "m", article: "el", noun: "diente", category: "head", note: "Masculine noun" },
+            { id: 22, spanish: "la espalda", english: "back", phonetic: "lah ehs-PAHL-dah", gender: "f", article: "la", noun: "espalda", category: "torso", note: "Feminine noun" },
+            { id: 23, spanish: "el esqueleto", english: "skeleton", phonetic: "ehl ehs-keh-LEH-toh", gender: "m", article: "el", noun: "esqueleto", category: "internal", note: "Masculine noun" },
+            { id: 24, spanish: "el estómago", english: "stomach", phonetic: "ehl ehs-TOH-mah-goh", gender: "m", article: "el", noun: "estómago", category: "internal", note: "Accent on 'ó'" },
+            { id: 25, spanish: "la frente", english: "forehead", phonetic: "lah FREHN-teh", gender: "f", article: "la", noun: "frente", category: "head", note: "Feminine for forehead" },
+            { id: 26, spanish: "la garganta", english: "throat", phonetic: "lah gar-GAHN-tah", gender: "f", article: "la", noun: "garganta", category: "head", note: "Feminine noun" },
+            { id: 27, spanish: "el hígado", english: "liver", phonetic: "ehl EE-gah-doh", gender: "m", article: "el", noun: "hígado", category: "internal", note: "Silent 'h', accent on 'í'" },
+            { id: 28, spanish: "el hombro", english: "shoulder", phonetic: "ehl OHM-broh", gender: "m", article: "el", noun: "hombro", category: "upper_body", note: "Silent 'h'" },
+            { id: 29, spanish: "el labio", english: "lip", phonetic: "ehl LAH-beeh-oh", gender: "m", article: "el", noun: "labio", category: "head", note: "Masculine noun" },
+            { id: 30, spanish: "la lengua", english: "tongue", phonetic: "lah LEHN-gwah", gender: "f", article: "la", noun: "lengua", category: "head", note: "Also means 'language'!" },
+            { id: 31, spanish: "la mandíbula", english: "jaw", phonetic: "lah mahn-DEE-boo-lah", gender: "f", article: "la", noun: "mandíbula", category: "head", note: "Accent on 'í'" },
+            { id: 32, spanish: "la mano", english: "hand", phonetic: "lah MAH-noh", gender: "f", article: "la", noun: "mano", category: "upper_body", note: "Irregular: ends in 'o' but feminine!" },
+            { id: 33, spanish: "la mejilla", english: "cheek", phonetic: "lah meh-HEE-yah", gender: "f", article: "la", noun: "mejilla", category: "head", note: "Feminine noun" },
+            { id: 34, spanish: "la muñeca", english: "wrist", phonetic: "lah moo-NYEH-kah", gender: "f", article: "la", noun: "muñeca", category: "upper_body", note: "Also means 'doll'" },
+            { id: 35, spanish: "el músculo", english: "muscle", phonetic: "ehl MOOS-koo-loh", gender: "m", article: "el", noun: "músculo", category: "internal", note: "Accent on 'ú'" },
+            { id: 36, spanish: "el muslo", english: "thigh", phonetic: "ehl MOOS-loh", gender: "m", article: "el", noun: "muslo", category: "lower_body", note: "Masculine noun" },
+            { id: 37, spanish: "la nariz", english: "nose", phonetic: "lah nah-REES", gender: "f", article: "la", noun: "nariz", category: "head", note: "Plural: las narices" },
+            { id: 38, spanish: "el nervio", english: "nerve", phonetic: "ehl NEHR-beeh-oh", gender: "m", article: "el", noun: "nervio", category: "internal", note: "Masculine noun" },
+            { id: 39, spanish: "el ojo", english: "eye", phonetic: "ehl OH-hoh", gender: "m", article: "el", noun: "ojo", category: "head", note: "Masculine noun" },
+            { id: 40, spanish: "la oreja", english: "ear", phonetic: "lah oh-REH-hah", gender: "f", article: "la", noun: "oreja", category: "head", note: "Outer ear" },
+            { id: 41, spanish: "el órgano", english: "organ", phonetic: "ehl OHR-gah-noh", gender: "m", article: "el", noun: "órgano", category: "internal", note: "Accent on 'ó'" },
+            { id: 42, spanish: "la palma", english: "palm", phonetic: "lah PAHL-mah", gender: "f", article: "la", noun: "palma", category: "upper_body", note: "Palm of hand" },
+            { id: 43, spanish: "el párpado", english: "eyelid", phonetic: "ehl PAR-pah-doh", gender: "m", article: "el", noun: "párpado", category: "head", note: "Accent on 'á'" },
+            { id: 44, spanish: "las pecas", english: "freckles", phonetic: "lahs PEH-kahs", gender: "f-plural", article: "las", noun: "pecas", category: "head", note: "Plural noun -> uses 'Me duelen'" },
+            { id: 45, spanish: "el pecho", english: "chest", phonetic: "ehl PEH-choh", gender: "m", article: "el", noun: "pecho", category: "torso", note: "Masculine noun" },
+            { id: 46, spanish: "el pelo", english: "hair", phonetic: "ehl PEH-loh", gender: "m", article: "el", noun: "pelo", category: "head", note: "Masculine noun" },
+            { id: 47, spanish: "la pestaña", english: "eyelash", phonetic: "lah pehs-TAH-nyah", gender: "f", article: "la", noun: "pestaña", category: "head", note: "Feminine noun" },
+            { id: 48, spanish: "el pie", english: "foot", phonetic: "ehl peeh-EH", gender: "m", article: "el", noun: "pie", category: "lower_body", note: "Masculine noun" },
+            { id: 49, spanish: "la piel", english: "skin", phonetic: "lah peeh-EHL", gender: "f", article: "la", noun: "piel", category: "general", note: "Feminine noun" },
+            { id: 50, spanish: "la pierna", english: "leg", phonetic: "lah peeh-EHR-nah", gender: "f", article: "la", noun: "pierna", category: "lower_body", note: "Feminine noun" },
+            { id: 51, spanish: "el pulgar", english: "thumb", phonetic: "ehl pool-GAHR", gender: "m", article: "el", noun: "pulgar", category: "upper_body", note: "Masculine noun" },
+            { id: 52, spanish: "el pulmón", english: "lung", phonetic: "ehl pool-MOHN", gender: "m", article: "el", noun: "pulmón", category: "internal", note: "Accent on 'ó'" },
+            { id: 53, spanish: "el puño", english: "fist", phonetic: "ehl POO-nyoh", gender: "m", article: "el", noun: "puño", category: "upper_body", note: "Masculine noun" },
+            { id: 54, spanish: "el riñón", english: "kidney", phonetic: "ehl ree-NYOHN", gender: "m", article: "el", noun: "riñón", category: "internal", note: "Accent on 'ó'" },
+            { id: 55, spanish: "la rodilla", english: "knee", phonetic: "lah roh-DEE-yah", gender: "f", article: "la", noun: "rodilla", category: "lower_body", note: "Feminine noun" },
+            { id: 56, spanish: "la sangre", english: "blood", phonetic: "lah SAHN-greh", gender: "f", article: "la", noun: "sangre", category: "internal", note: "Feminine fluid" },
+            { id: 57, spanish: "el talón", english: "heel", phonetic: "ehl tah-LOHN", gender: "m", article: "el", noun: "talón", category: "lower_body", note: "Accent on 'ó'" },
+            { id: 58, spanish: "el tobillo", english: "ankle", phonetic: "ehl toh-BEE-yoh", gender: "m", article: "el", noun: "tobillo", category: "lower_body", note: "Masculine noun" },
+            { id: 59, spanish: "la uña", english: "nail", phonetic: "lah OO-nyah", gender: "f", article: "la", noun: "uña", category: "upper_body", note: "Feminine (fingernail / toenail)" }
+        ];
+
+        /* STATE MANAGEMENT */
+        let appState = {
+            score: 0,
+            streak: 0,
+            masteredIds: new Set(),
+            flashcardDeck: [...VOCABULARY],
+            flashcardIndex: 0,
+            quizQuestions: [],
+            quizCurrentIndex: 0,
+            quizScore: 0,
+            quizAnswered: false,
+            medueleIndex: 0,
+            medueleScore: 0,
+            medueleQuestions: [],
+            speechCurrentTerm: VOCABULARY[7], // default head
+            speechRecognition: null,
+            isRecording: false
+        };
+
+        /* AUDIO SPEECH GENERATION ENGINE */
+        async function playAudio(text, voice = "Zephyr") {
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+
+            // Try Gemini TTS model first
+            try {
+                const payload = {
+                    contents: [{ parts: [{ text: `Say clearly in natural Spanish: ${text}` }] }],
+                    generationConfig: {
+                        responseModalities: ["AUDIO"],
+                        speechConfig: {
+                            voiceConfig: {
+                                prebuiltVoiceConfig: { voiceName: voice }
+                            }
+                        }
+                    },
+                    model: "gemini-2.5-flash-preview-tts"
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+
+                if (part?.inlineData?.data && part?.inlineData?.mimeType?.startsWith("audio/")) {
+                    const sampleRate = parseInt(part.inlineData.mimeType.match(/rate=(\d+)/)?.[1] || "24000", 10);
+                    const pcmData = base64ToArrayBuffer(part.inlineData.data);
+                    const pcm16 = new Int16Array(pcmData);
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    const audio = new Audio(audioUrl);
+                    await audio.play();
+                    return;
+                }
+            } catch (err) {
+                console.warn("Gemini API TTS fallback to browser WebSpeech API:", err);
+            }
+
+            // Reliable Fallback to Web Speech API
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                utterance.rate = 0.85; // slightly slower rate for language learners
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        /* PCM to WAV Binary Converter */
+        function base64ToArrayBuffer(base64) {
+            const binaryString = window.atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function pcmToWav(pcm16, sampleRate) {
+            const numChannels = 1;
+            const sampleBits = 16;
+            const buffer = new ArrayBuffer(44 + pcm16.length * 2);
+            const view = new DataView(buffer);
+
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + pcm16.length * 2, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * numChannels * 2, true);
+            view.setUint16(32, numChannels * 2, true);
+            view.setUint16(34, sampleBits, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, pcm16.length * 2, true);
+
+            let offset = 44;
+            for (let i = 0; i < pcm16.length; i++, offset += 2) {
+                view.setInt16(offset, pcm16[i], true);
+            }
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+        /* TAB NAVIGATION LOGIC */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active', 'text-blue-400', 'bg-slate-800');
+                tab.classList.add('text-slate-400');
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeTabBtn = document.getElementById(`tab-${tabId}`);
+            if (activeTabBtn) {
+                activeTabBtn.classList.add('active', 'text-blue-400', 'bg-slate-800');
+                activeTabBtn.classList.remove('text-slate-400');
+            }
+
+            if (tabId === 'anatomy') renderAnatomyList('head');
+        }
+
+        /* VOCABULARY LIST LOGIC */
+        function renderVocabularyList(items = VOCABULARY) {
+            const grid = document.getElementById('vocabGrid');
+            grid.innerHTML = items.map(item => {
+                const isMastered = appState.masteredIds.has(item.id);
+                const articleBadgeClass = item.article === 'el' 
+                    ? 'bg-blue-100 text-blue-800 border-blue-200' 
+                    : item.article === 'las' 
+                    ? 'bg-purple-100 text-purple-800 border-purple-200' 
+                    : 'bg-rose-100 text-rose-800 border-rose-200';
+
+                return `
+                    <div class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all flex flex-col justify-between space-y-3 group">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold px-2.5 py-0.5 rounded-md border ${articleBadgeClass}">${item.article}</span>
+                            <button onclick="playAudio('${item.spanish}')" title="Listen" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-600 flex items-center justify-center transition-all">
+                                <i class="fa-solid fa-volume-high text-xs"></i>
+                            </button>
+                        </div>
+
+                        <div>
+                            <div class="text-xs text-slate-400 font-mono">#${item.id}</div>
+                            <h3 class="text-lg font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors">${item.spanish}</h3>
+                            <p class="text-sm font-semibold text-slate-600 capitalize">${item.english}</p>
+                            <p class="text-xs text-slate-400 italic mt-0.5">${item.phonetic}</p>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                            <span class="truncate max-w-[150px]">${item.note}</span>
+                            ${isMastered ? '<i class="fa-solid fa-circle-check text-emerald-500" title="Mastered"></i>' : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterVocab() {
+            const search = document.getElementById('vocabSearch').value.toLowerCase();
+            const filter = document.getElementById('vocabFilter').value;
+
+            const filtered = VOCABULARY.filter(item => {
+                const matchesSearch = item.spanish.toLowerCase().includes(search) || item.english.toLowerCase().includes(search);
+                const matchesCategory = filter === 'all' || item.category === filter;
+                return matchesSearch && matchesCategory;
+            });
+
+            renderVocabularyList(filtered);
+        }
+
+        /* FLASHCARD ENGINE */
+        function renderFlashcard() {
+            if (appState.flashcardDeck.length === 0) return;
+            const current = appState.flashcardDeck[appState.flashcardIndex];
+
+            document.getElementById('cardIndex').innerText = appState.flashcardIndex + 1;
+            document.getElementById('cardTotal').innerText = appState.flashcardDeck.length;
+
+            document.getElementById('cardArticle').innerText = current.article;
+            document.getElementById('cardSpanish').innerText = current.noun;
+            document.getElementById('cardPhonetic').innerText = current.phonetic;
+            document.getElementById('cardEnglish').innerText = current.english;
+            document.getElementById('cardCategoryBadge').innerText = current.category.replace('_', ' ').toUpperCase();
+            document.getElementById('cardGrammarNote').innerText = current.note;
+
+            // Sentence context preview
+            const sample = current.gender.includes('plural') 
+                ? `Me duelen ${current.spanish}` 
+                : `Me duele ${current.spanish}`;
+            document.getElementById('cardSampleSentence').innerText = `"${sample}"`;
+
+            // Reset flip state
+            document.getElementById('flashcardElement').classList.remove('flipped');
+        }
+
+        function toggleCardFlip() {
+            document.getElementById('flashcardElement').classList.toggle('flipped');
+        }
+
+        function playCurrentCardAudio() {
+            const current = appState.flashcardDeck[appState.flashcardIndex];
+            playAudio(current.spanish);
+        }
+
+        function nextCard(isMastered) {
+            const current = appState.flashcardDeck[appState.flashcardIndex];
+            if (isMastered) {
+                appState.masteredIds.add(current.id);
+                appState.score += 10;
+                updateStats();
+            }
+
+            appState.flashcardIndex = (appState.flashcardIndex + 1) % appState.flashcardDeck.length;
+            renderFlashcard();
+        }
+
+        function shuffleFlashcards() {
+            appState.flashcardDeck.sort(() => Math.random() - 0.5);
+            appState.flashcardIndex = 0;
+            renderFlashcard();
+        }
+
+        function resetFlashcards() {
+            appState.flashcardDeck = [...VOCABULARY];
+            appState.flashcardIndex = 0;
+            renderFlashcard();
+        }
+
+        /* PRACTICE QUIZ ENGINE */
+        function startNewQuiz() {
+            appState.quizCurrentIndex = 0;
+            appState.quizScore = 0;
+            appState.quizAnswered = false;
+
+            // Select 10 random terms for quiz
+            const shuffled = [...VOCABULARY].sort(() => Math.random() - 0.5);
+            appState.quizQuestions = shuffled.slice(0, 10);
+
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            appState.quizAnswered = false;
+            const current = appState.quizQuestions[appState.quizCurrentIndex];
+            const quizType = document.getElementById('quizType').value;
+
+            document.getElementById('quizQuestionNum').innerText = appState.quizCurrentIndex + 1;
+            document.getElementById('quizScoreBadge').innerText = `Score: ${appState.quizScore}/${appState.quizCurrentIndex}`;
+            document.getElementById('quizFeedback').classList.add('hidden');
+            document.getElementById('quizNextBtn').disabled = true;
+
+            const questionTextEl = document.getElementById('quizQuestionText');
+            const hintTextEl = document.getElementById('quizHintText');
+            const audioBtn = document.getElementById('quizAudioBtn');
+
+            let correctAnswer = '';
+            let distractors = [];
+
+            if (quizType === 'es_en') {
+                document.getElementById('quizPromptSubtitle').innerText = 'Select the English translation';
+                questionTextEl.innerText = current.spanish;
+                hintTextEl.innerText = `Phonetic: ${current.phonetic}`;
+                audioBtn.classList.remove('hidden');
+                correctAnswer = current.english;
+                distractors = VOCABULARY.filter(v => v.id !== current.id)
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3)
+                    .map(v => v.english);
+
+                playAudio(current.spanish);
+            } else if (quizType === 'en_es') {
+                document.getElementById('quizPromptSubtitle').innerText = 'Select the Spanish term';
+                questionTextEl.innerText = current.english;
+                hintTextEl.innerText = `Category: ${current.category.replace('_', ' ')}`;
+                audioBtn.classList.add('hidden');
+                correctAnswer = current.spanish;
+                distractors = VOCABULARY.filter(v => v.id !== current.id)
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3)
+                    .map(v => v.spanish);
+            } else if (quizType === 'audio') {
+                document.getElementById('quizPromptSubtitle').innerText = 'Listen carefully and select the term';
+                questionTextEl.innerText = '🔊 Click to replay audio';
+                hintTextEl.innerText = 'Listen closely to the spoken Spanish';
+                audioBtn.classList.remove('hidden');
+                correctAnswer = current.english;
+                distractors = VOCABULARY.filter(v => v.id !== current.id)
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3)
+                    .map(v => v.english);
+
+                playAudio(current.spanish);
+            } else if (quizType === 'article') {
+                document.getElementById('quizPromptSubtitle').innerText = 'Choose the correct article (el, la, or las)';
+                questionTextEl.innerText = `___ ${current.noun}`;
+                hintTextEl.innerText = `English: ${current.english}`;
+                audioBtn.classList.remove('hidden');
+                correctAnswer = current.article;
+                distractors = ['el', 'la', 'las'].filter(a => a !== current.article);
+
+                playAudio(current.spanish);
+            }
+
+            // Combine and shuffle choices
+            const choices = [correctAnswer, ...distractors].sort(() => Math.random() - 0.5);
+
+            const optionsGrid = document.getElementById('quizOptionsGrid');
+            optionsGrid.innerHTML = choices.map(choice => `
+                <button onclick="submitQuizAnswer('${choice.replace(/'/g, "\\'")}', '${correctAnswer.replace(/'/g, "\\'")}')" 
+                    class="quiz-opt-btn p-4 bg-slate-50 hover:bg-blue-50 border-2 border-slate-200 hover:border-blue-400 font-bold rounded-2xl text-slate-800 hover:text-blue-900 transition-all text-center">
+                    ${choice}
+                </button>
+            `).join('');
+        }
+
+        function playQuizQuestionAudio() {
+            const current = appState.quizQuestions[appState.quizCurrentIndex];
+            playAudio(current.spanish);
+        }
+
+        function submitQuizAnswer(selected, correct) {
+            if (appState.quizAnswered) return;
+            appState.quizAnswered = true;
+
+            const isCorrect = selected.toLowerCase() === correct.toLowerCase();
+            const feedbackEl = document.getElementById('quizFeedback');
+            feedbackEl.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'bg-rose-50', 'text-rose-800');
+
+            if (isCorrect) {
+                appState.quizScore++;
+                appState.score += 15;
+                appState.streak++;
+                feedbackEl.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> Excellent! That is correct.`;
+            } else {
+                appState.streak = 0;
+                feedbackEl.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-2"></i> Incorrect. The correct answer was: <strong>${correct}</strong>`;
+            }
+
+            updateStats();
+            document.getElementById('quizNextBtn').disabled = false;
+        }
+
+        function nextQuizQuestion() {
+            appState.quizCurrentIndex++;
+            if (appState.quizCurrentIndex >= appState.quizQuestions.length) {
+                // Quiz completed
+                alert(`🎉 Quiz Finished! Final Score: ${appState.quizScore}/10`);
+                startNewQuiz();
+            } else {
+                renderQuizQuestion();
+            }
+        }
+
+        /* ME DUELE GRAMMAR LAB */
+        function initMeDueleLab() {
+            appState.medueleScore = 0;
+            appState.medueleQuestions = [...VOCABULARY].sort(() => Math.random() - 0.5);
+            appState.medueleIndex = 0;
+            renderMeDueleQuestion();
+        }
+
+        function renderMeDueleQuestion() {
+            const current = appState.medueleQuestions[appState.medueleIndex];
+            const isPlural = current.gender.includes('plural');
+
+            document.getElementById('meduelePrompt').innerText = `"My ${current.english} hurt${isPlural ? '' : 's'}"`;
+            document.getElementById('medueleBodyPartHint').innerText = `Body Part: ${current.spanish}`;
+            document.getElementById('medueleFeedback').classList.add('hidden');
+            document.getElementById('medueleScore').innerText = `Score: ${appState.medueleScore}`;
+
+            playAudio(isPlural ? `Me duelen ${current.spanish}` : `Me duele ${current.spanish}`);
+        }
+
+        function checkMeDueleChoice(selectedChoice) {
+            const current = appState.medueleQuestions[appState.medueleIndex];
+            const isPlural = current.gender.includes('plural');
+            const correctPrefix = isPlural ? 'Me duelen' : 'Me duele';
+
+            const feedbackEl = document.getElementById('medueleFeedback');
+            feedbackEl.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'bg-rose-50', 'text-rose-800');
+
+            if (selectedChoice === correctPrefix) {
+                appState.medueleScore += 10;
+                appState.score += 10;
+                feedbackEl.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                feedbackEl.innerHTML = `
+                    <p class="font-extrabold"><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Correct!</p>
+                    <p class="text-xs">Full sentence: <strong>"${correctPrefix} ${current.spanish}"</strong></p>
+                `;
+            } else {
+                feedbackEl.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                feedbackEl.innerHTML = `
+                    <p class="font-extrabold"><i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> Incorrect</p>
+                    <p class="text-xs">Since <strong>${current.spanish}</strong> is ${isPlural ? 'plural' : 'singular'}, use <strong>"${correctPrefix}"</strong>.</p>
+                `;
+            }
+
+            updateStats();
+        }
+
+        function nextMeDueleQuestion() {
+            appState.medueleIndex = (appState.medueleIndex + 1) % appState.medueleQuestions.length;
+            renderMeDueleQuestion();
+        }
+
+        /* ANATOMY DIAGRAM EXPLORER */
+        function selectAnatomyPin(category) {
+            renderAnatomyList(category);
+        }
+
+        function renderAnatomyList(category) {
+            const filtered = VOCABULARY.filter(item => item.category === category);
+            const titles = {
+                head: 'Head & Face Region',
+                upper_body: 'Arms & Hands Region',
+                torso: 'Torso & Back Region',
+                lower_body: 'Legs & Feet Region',
+                internal: 'Internal Organs & Skeleton',
+                general: 'General Body Terms'
+            };
+
+            document.getElementById('anatomyRegionTitle').innerText = titles[category] || 'Body Region';
+            document.getElementById('anatomyTermCount').innerText = `${filtered.length} Terms`;
+
+            const container = document.getElementById('anatomyTermsContainer');
+            container.innerHTML = filtered.map(item => `
+                <div class="p-3 bg-slate-50 hover:bg-blue-50/60 rounded-xl border border-slate-200 flex items-center justify-between transition-all">
+                    <div>
+                        <span class="text-base font-bold text-slate-900">${item.spanish}</span>
+                        <span class="text-xs text-slate-500 ml-2">(${item.english})</span>
+                        <p class="text-xs text-slate-400 italic">${item.phonetic}</p>
+                    </div>
+                    <button onclick="playAudio('${item.spanish}')" class="w-8 h-8 rounded-full bg-blue-100 hover:bg-blue-600 text-blue-700 hover:text-white flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-volume-high text-xs"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        /* SPEECH RECOGNITION STUDIO */
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                appState.speechRecognition = new SpeechRecognition();
+                appState.speechRecognition.lang = 'es-ES';
+                appState.speechRecognition.continuous = false;
+                appState.speechRecognition.interimResults = false;
+
+                appState.speechRecognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript.toLowerCase();
+                    handleSpeechResult(transcript);
+                };
+
+                appState.speechRecognition.onerror = () => {
+                    document.getElementById('speechMicStatus').innerText = 'Speech not recognized. Try speaking again.';
+                    stopSpeechRecordingUI();
+                };
+
+                appState.speechRecognition.onend = () => {
+                    stopSpeechRecordingUI();
+                };
+            } else {
+                document.getElementById('speechMicStatus').innerText = 'Speech recognition not supported in this browser.';
+            }
+        }
+
+        function toggleSpeechRecording() {
+            if (!appState.speechRecognition) {
+                alert('Speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.');
+                return;
+            }
+
+            if (appState.isRecording) {
+                appState.speechRecognition.stop();
+                stopSpeechRecordingUI();
+            } else {
+                appState.speechRecognition.start();
+                appState.isRecording = true;
+                document.getElementById('speechMicBtn').classList.add('animate-pulse', 'bg-red-600');
+                document.getElementById('speechMicStatus').innerText = 'Listening... Speak now!';
+            }
+        }
+
+        function stopSpeechRecordingUI() {
+            appState.isRecording = false;
+            document.getElementById('speechMicBtn').classList.remove('animate-pulse', 'bg-red-600');
+            document.getElementById('speechMicStatus').innerText = 'Click microphone and speak clearly in Spanish';
+        }
+
+        function handleSpeechResult(spokenText) {
+            const target = appState.speechCurrentTerm.spanish.toLowerCase();
+            const cleanSpoken = spokenText.replace(/[^\w\s]/gi, '');
+            const cleanTarget = target.replace(/[^\w\s]/gi, '');
+
+            const resultCard = document.getElementById('speechResultCard');
+            resultCard.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'bg-amber-50', 'text-amber-800');
+
+            const matches = cleanSpoken.includes(cleanTarget) || cleanTarget.includes(cleanSpoken);
+
+            if (matches) {
+                resultCard.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                document.getElementById('speechDetectedText').innerText = `You said: "${spokenText}"`;
+                document.getElementById('speechScoreMessage').innerText = `🎯 Match: 100%! Excellent Spanish Accent.`;
+                appState.score += 20;
+                updateStats();
+            } else {
+                resultCard.classList.add('bg-amber-50', 'text-amber-800', 'border', 'border-amber-200');
+                document.getElementById('speechDetectedText').innerText = `You said: "${spokenText}"`;
+                document.getElementById('speechScoreMessage').innerText = `Keep practicing! Target was "${target}".`;
+            }
+        }
+
+        function playSpeechTargetAudio() {
+            playAudio(appState.speechCurrentTerm.spanish);
+        }
+
+        function getRandomSpeechTerm() {
+            const random = VOCABULARY[Math.floor(Math.random() * VOCABULARY.length)];
+            appState.speechCurrentTerm = random;
+            document.getElementById('speechTargetSpanish').innerText = random.spanish;
+            document.getElementById('speechTargetEnglish').innerText = random.english;
+            document.getElementById('speechResultCard').classList.add('hidden');
+        }
+
+        function nextSpeechTerm() {
+            getRandomSpeechTerm();
+            playSpeechTargetAudio();
+        }
+
+        /* UPDATE GLOBAL STATS UI */
+        function updateStats() {
+            document.getElementById('headerScore').innerText = appState.score;
+            document.getElementById('headerStreak').innerText = appState.streak;
+            document.getElementById('headerLearned').innerText = appState.masteredIds.size;
+        }
+
+        /* INITIALIZE APPLICATION ON LOAD */
+        window.onload = function() {
+            renderVocabularyList();
+            renderFlashcard();
+            startNewQuiz();
+            initMeDueleLab();
+            initSpeechRecognition();
+            getRandomSpeechTerm();
+        };
+    </script>
+</body>
+</html>
